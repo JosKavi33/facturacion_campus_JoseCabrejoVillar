@@ -1,0 +1,6 @@
+EStos son diversos patrones para la validacion por DTO
+(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]+$/) para validar nombres, apellidos, entre otros strings
+(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/) para validad email
+(/^[0-9-]*$/) para validar nnumero de telefono
+(/^(0?[1-9]|1[0-2]):[0-5]\\d\\s?(am|pm|AM|PM)$/) para validar hora
+(/^(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$/) para validar fechas
