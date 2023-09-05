@@ -2,42 +2,64 @@ import { limitUsuario } from '../helpers/limit.js'
 import passportHelper from '../helpers/passPortHelper.js'
 import Routes from 'express';
 import routesVersioning from 'express-routes-versioning';
-
-//* Importacion de los Metodos para todas las Colecciones
-import {getAreaById,getAreaAll,postArea,putArea,delArea} from '../apis/Version1/areaApi.js';
-
-//* Importacion de los middleware de las Validaciones nativas de express
-import { appMiddlewareDataArea , appMiddlewareParamArea } from '../middleware/areaMiddleware.js';
-
-
-const appUser = Routes();
-const appArea = Routes();
+import { getMedicamentosAll, getMedicamentoById } from '../apis/medicamentosApi.js';
+import { getProveedorById, getProveedoresAll } from '../apis/proveedoresApi.js';
+import { getVendedorById, getVendedoresAll } from '../apis/vendedoresApi.js';
+import { getPacienteById, getPacientesAll } from '../apis/pacientesApi.js';
+import { getVentasAll, getVentasById } from '../apis/ventasApi.js';
+import { getComprasAll, getComprasById } from '../apis/comprasApi.js';
+import { getRecetasAll, getRecetasById } from '../apis/recetasApi.js';
+import { appMiddlewareParamUsuario } from '../middleware/usuarioMiddleware.js';
 
 const version = routesVersioning();
+const appUser = Routes();
+const appMedicamento= Routes();
+const appVentas= Routes();
+const appCompras= Routes();
+const appRecetas= Routes();
+const appPacientes= Routes();
+const appVendedores= Routes();
+const appProveedores= Routes();
 
-// ? Headers 'Authorization: Bearer ....'
 appUser.use(limitUsuario(), passportHelper.authenticate('bearer', {
     session: false
 }));
+appMedicamento.get('/:id?', appMiddlewareParam ,version({
+    "1.0.0": getMedicamentosAll,
+    "1.0.1": getMedicamentoById
+}));
+appProveedores.get('/:id?', appMiddlewareParam ,version({
+    "1.0.0": getProveedoresAll,
+    "1.0.1": getProveedorById
+}));
+appVentas.get('/:id?', appMiddlewareParam ,version({
+    "1.0.0": getVentasAll,
+    "1.0.1": getVentasById
+}));
+appCompras.get('/:id?', appMiddlewareParam ,version({
+    "1.0.0": getComprasAll,
+    "1.0.1": getComprasById
+}));
+appRecetas.get('/:id?', appMiddlewareParam ,version({
+    "1.0.0": getRecetasAll,
+    "1.0.1": getRecetasById
+}));
+appPacientes.get('/:id?', appMiddlewareParam ,version({
+    "1.0.0": getPacientesAll,
+    "1.0.1": getPacienteById
+}));
+appVendedores.get('/:id?', appMiddlewareParam ,version({
+    "1.0.0": getVendedoresAll,
+    "1.0.1": getVendedorById
+}));
 
-// * Headers 'Accept-Version: 1.0.0' 
-// ? Area
-appArea.get('/:id?' , appMiddlewareParamArea ,version({
-    "1.0.0": getAreaAll,
-    "1.0.1": getAreaById 
-}));
-appArea.post('/', appMiddlewareDataArea, version({
-    "1.0.0": postArea
-}));
-appArea.put('/:id?', appMiddlewareParamArea, appMiddlewareDataArea, version({
-    "1.0.0": putArea
-}));
-appArea.delete('/:id?', appMiddlewareParamArea, version({
-    "1.0.0": delArea
-}));
-
-//*Exportamos las apps hacia app.js en la parte principal del codigo
 export {
+    appMedicamento,
     appUser,
-    appArea
+    appVentas,
+    appCompras,
+    appRecetas,
+    appPacientes,
+    appVendedores,
+    appProveedores
 };

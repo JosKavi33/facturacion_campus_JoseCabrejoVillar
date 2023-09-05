@@ -1,7 +1,88 @@
-# Incidencias MongoDB
+# FActuracion MongoDB
 
-En este Taller estamos Generando una Base de Datos en mongo apartir de una base de datos de Mysql para un sistema de control de incidencias, implementado nuevas tecnologias para optimizar las consultas, que permita a los Trainners reportar problemas de los equipos pertenecientes a salones por zonas
+El cliente requiere un sistema de gestión que permita gestionar las ventas y compras, interactuar con proveedores, empleados y pacientes,  generar informes de ventas y caducidad de medicamentos. Es esencial que este software pase por un proceso de análisis de requerimientos, diseño, implementación, pruebas, y eventual retiro, garantizando en todo momento la adaptabilidad, confiabilidad y eficiencia para las operaciones diarias de la farmacia.
 
+## # Consultas
+
+1. Obtener todos los medicamentos con menos de 50 unidades en stock
+
+2. Listar los proveedores con su información de contacto en medicamentos
+
+3. Medicamentos comprados al 'Proveedor A'
+
+4. Obtener recetas médicas emitidas después del 1 de enero de 2023
+
+5. . Total de ventas del medicamento 'Paracetamol'
+
+6. Medicamentos que caducan antes del 1 de enero de 2024
+
+7. Total de medicamentos vendidos por cada proveedor
+
+8. Cantidad total de dinero recaudado por las ventas de medicamentos
+
+9. Recetas prescritas por el Dr. Martínez
+
+10. Medicamentos que no han sido vendidos
+
+11. Obtener el medicamento más caro
+
+12. Número de medicamentos por proveedor
+
+13. Pacientes que han comprado Paracetamol
+
+14. Proveedores que no han vendido medicamentos en el último año
+
+15. Obtener el total de medicamentos vendidos en marzo de 2023
+
+16. Obtener el medicamento menos vendido en 2023
+
+17. Ganancia total por proveedor en 2023 (asumiendo un campo precioCompra en Compras)
+
+18. Promedio de medicamentos comprados por venta
+
+19. Medicamentos que tienen menos de 50 unidades en stock
+
+20. Cantidad de ventas realizadas por cada empleado en 2023
+
+21. Obtener todos los medicamentos que expiren en 2024
+
+22. Empleados que hayan hecho más de 5 ventas en total
+
+23. Medicamentos que no han sido vendidos nunca
+
+24. Paciente que ha gastado más dinero en 2023
+
+25. Empleados que no han realizado ninguna venta en 2023
+
+26. Proveedor que ha suministrado más medicamentos en 2023
+
+27. Pacientes que compraron el medicamento "Paracetamol" en 2023
+
+28. Total de medicamentos vendidos por mes en 2023
+
+29. Empleados con menos de 5 ventas en 2023
+
+30. Número total de proveedores que suministraron medicamentos en 2023
+
+31. Proveedores de los medicamentos con menos de 50 unidades en stock
+
+32. Pacientes que no han comprado ningún medicamento en 2023
+
+33. Medicamentos que han sido vendidos cada mes del año 2023
+
+34. Empleado que ha vendido la mayor cantidad de medicamentos distintos en 2023
+
+35. Total gastado por cada paciente en 2023
+
+36. Medicamentos que no han sido vendidos en 2023
+
+37. Proveedores que han suministrado al menos 5 medicamentos diferentes en 2023
+
+38. Total de medicamentos vendidos en el primer trimestre de 2023
+
+39. Empleados que no realizaron ventas en abril de 2023
+
+40. Medicamentos con un precio mayor a 50 y un stock menor a 100
 
 # DATABASE A USAR
 
@@ -37,7 +118,7 @@ Este es el esquema de la base de datos en <span style="color:orange;">MySQL</spa
 Clonamos el repositorio con visual estudio code y lo guardamos en una carpeta de nuestra elección
 
 ```
-https://github.com/JoseCabrejoVillarCampus/mongoIncidenciasCampus
+https://github.com/JoseCabrejoVillarCampus/plantillafiltro
 ```
 <br><br>
 
@@ -118,446 +199,3 @@ Esta nos permite dar un id autoincremental a cada rol agregado
 
 <img src="./img/autoincrrementa.png"><br><br>
 
-# GENERACION DE TOKEN DE ACCESO
-
-En esta ocacion, hemos generado un token de acceso unico para cada usuario, basandonos en su esquema, rol y  permisos, este codigo lo podemos observar dentro de la carpeta [helpers](helpers), en el archivo [JWT.js](helpers/JWT.js)
-
-Generar Token de acceso 
-
-- Generación: Una vez dentro del cliente que estemos usando,("En este caso estamos ejecutando en thunderClient"), a traves
-del metodo POST
-
-```js
-  http://${config.hostname}:${config.port}/login
-```
-
-<img src="./img/token.png" ><br><br>
-
-Donde debemos pasarle un body con un nombre que tengamos creado ya en la base de datos, dentro de la coleccion cliente, tambien vemos los permisos para las versiones que este tiene:
-
-```js
-  {
-    "nombre": "Jhon"
-  }
-```
-```js
-  {
-    "nombre": "Marcos"
-  }
-```
-<br><br>
-
-En este ejemplo vemos que "Jhon" y "Marcos", tienen permisos diferentes
-
-<img src="./img/emeplotoken.png" ><br><br>
-
-
-Este token tiene un limite de tiempo, en ese rango de tiempo podremos acceder a las rutas y endPoints de nuestra Api. Una vez pasada esta hora será necesario generar uno nuevo.<br><br>
-
-
-# CONSULTAS<br><br>
-
-
-## FUNCIONAMIENTO Y ENDPOINTS.<br><br>
-
-
-**CRUD DE LAS COLECCIONES**
-Los siguiente endPoints corresponden a los CRUDs de cada coleccion, **es importante recordar que para realizar los metodos devimos generar anteriormente el token de usuario y tener los permisos, en este caso Accept-Version de las rutas**.
-Para estos endPoints se pueden realizar las consultas básicas, get, get by id, post, put y delete.  <br><br>
-
-* EndPoint CRUD de la Tabla db_incidencias:
-Estos funciona  para POST/ GET/ DELETE/ PUT/,dentro del cliente que deseemos usar<br><br>
-
-* EndPoint CRUD de la Tabla area: 
-```js
-  http://${config.hostname}:${config.port}/area
-```
-<br><br> 
-
-* EndPoint CRUD de la Tabla categoria: 
-```js
-  http://${config.hostname}:${config.port}/categoria
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla diadema:
-```js
-  http://${config.hostname}:${config.port}/diadema
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla email: 
-```js
-  http://${config.hostname}:${config.port}/email
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla equipo:
-```js
-  http://${config.hostname}:${config.port}/equipo
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla estado: 
-```js
-  http://${config.hostname}:${config.port}/estado
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla incidencia: 
-```js
-  http://${config.hostname}:${config.port}/incidencia
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla mouse:
-```js
-  http://${config.hostname}:${config.port}/mouse
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla pantalla: 
-```js
-  http://${config.hostname}:${config.port}/pantalla
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla reporte: 
-```js
-  http://${config.hostname}:${config.port}/reporte
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla salonTrainner: 
-```js
-  http://${config.hostname}:${config.port}/salonTrainner
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla salon: 
-```js
-  http://${config.hostname}:${config.port}/salon
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla teclado: 
-```js
-  http://${config.hostname}:${config.port}/teclado
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla telefono: 
-```js
-  http://${config.hostname}:${config.port}/telefono
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla tipoIncidencia: 
-```js
-  http://${config.hostname}:${config.port}/tipoIncidencia
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla torre: 
-```js
-  http://${config.hostname}:${config.port}/torre
-```
-<br><br>
-
-* EndPoint CRUD de la Tabla trainner: 
-```js
-  http://${config.hostname}:${config.port}/trainner
-```
-<br><br>
-
-
-<span style="color:green;">Adicional ahora debemos enviar en los Headers, la version y el token</span><br><br>
-
-<span style="color:blue;">EJEMPLO:</span><br><br>
-
-<img src="./img/ejemploheader.png" ><br><br>
-
-Ahora, las versiones disponibles para los Crud normales son
-
-```js
-  version:[1.0.0]
-```
-<br><br>
-
-## Metodo GET BY ID para todas las colecciones
-
-El metodo **GET BY ID** para todas las tablas es el mismo del endpoint,pero si deseamos buscar por ID, si cambia algo la ruta, ya que nos es necesario adicionar un "/" seguido del id que desamos buscar
-
-<span style="color:blue;">EJEMPLO:</span>
-
-```js
-  http://${config.hostname}:${config.port}/area?id=2
-```
-
-Validador  en Ejecucion:
-
-<img src="./img/IDVAL.png">
-
-
-En este caso estamos buscando dentro de la coleccion area, el id especifico 2, que corresponde a nuestro "id_area", creado en los esquemeas
-
-<img src="./img/GETID.png"><br>
-
-
-pero aca es necesario ajustar la version
-
-```js
-  version:[1.0.1]
-```
-
-
-## Metodo POST para todas las colecciones
-
-El metodo **POST** funciona igual en todas las colecciones, en la misma url del metodo get. 
-El body es donde vamos a hacer la insersion de datos y contiene los campos de la coleccion, para cada coleccion el body 
-varia.
-
-```js
-  version:[1.0.0]
-```
-
-<span style="color:blue;">EJEMPLO:</span>
-
-<img src="./img/POST.png"><br><br>
-
-Validador  en Ejecucion:
-
-<img src="./img/POSTVAL.png">
-
-
-
-## Metodo PUT para todas las colecciones
-
-El metodo put funciona igual en todas las colecciones, en la misma url del metodo colecciones?id=,
-este parametro id dentro del body se omite. 
-El body es donde vamos a hacer la insersion de datos y contiene los campos de la coleccion, para cada coleccion el body 
-varia.
-
-```js
-  http://${config.hostname}:${config.port}/area?id=2
-```
-
-```js
-  version:[1.0.0]
-```
-
-<span style="color:blue;">EJEMPLO:</span>
-
-<img src="./img/PUT.png">
-
-Validador  en Ejecucion:
-
-<img src="./img/PUVAL.png">
-
-### BODY PARA LAS COLECCIONES METODO POST Y PUT:
-
-<span style="color:blue;">Para Incidencia (incidencia)</span>
-
-```js
-  {
-    "id_incidencia": 0,
-    "categoria_incidencia": 0,
-    "tipo_incidencia": 0,
-    "descripcion_incidencia": "",
-    "fecha_incidencia": 0,
-    "equipo_incidencia": 0,
-    "lugar_incidencia": 0,
-    "trainner_reporta_incidencia": 0
-  }
-```
-
-<span style="color:blue;">Para Equipo (equipo)</span>
-
-```js
-  {
-    "id_equipo": 0,
-    "pantalla_equipo": 0,
-    "torre_equipo": 0,
-    "teclado_equipo": 0,
-    "mouse_equipo": 0,
-    "diadema_equipo": 0,
-    "salon_equipo": 0
-  }
-```
-
-<span style="color:blue;">Para Diadema (diadema)</span>
-
-```js
-  {
-    "id_diadema": 0,
-    "marca_diadema": "",
-    "color_diadema": "",
-    "estado_diadema": 0
-  }
-```
-
-<span style="color:blue;">Para Mouse (mouse)</span>
-
-```js
-  {
-    "id_mouse": 0,
-    "marca_mouse": "",
-    "color_mouse": "",
-    "estado_mouse": 0
-  }
-```
-
-<span style="color:blue;">Para Teclado (teclado)</span>
-
-```js
-  {
-    "id_teclado": 0,
-    "marca_teclado": "",
-    "color_teclado": "",
-    "estado_teclado": 0
-  }
-```
-
-<span style="color:blue;">Para Torre (torre)</span>
-
-```js
-  {
-    "id_torre": 0,
-    "marca_torre": "",
-    "color_torre": "",
-    "estado_torre": 0
-  }
-```
-
-<span style="color:blue;">Para Pantalla (pantalla)</span>
-
-```js
-  {
-    "id_pantalla": 0,
-    "marca_pantalla": "",
-    "color_pantalla": "",
-    "estado_pantalla": 0
-  }
-```
-
-<span style="color:blue;">Para Email (email)</span>
-
-```js
-  {
-    "id_email": 0,
-    "email": "",
-    "trainner_email": 0
-  }
-```
-
-<span style="color:blue;">Para Telefono (telefono)</span>
-
-```js
-  {
-    "id_telefono": 0,
-    "numero_telefono": "",
-    "trainner_telefono": 0
-  }
-```
-
-<span style="color:blue;">Para Salon_trainner (salon_trainner)</span>
-
-```js
-  {
-    "id_salon_trainner": 0,
-    "id_trainner": 0,
-    "id_salon": 0
-  }
-```
-
-<span style="color:blue;">Para salon (salon)</span>
-
-```js
-  {
-    "id_salon": 0,
-    "nombre_salon": "",
-    "area_salon": 0
-  }
-```
-
-<span style="color:blue;">Para Trainners (trainners)</span>
-
-```js
-  {
-    "id_trainner": 0,
-    "nombre_trainner": "",
-    "jornada_trainner": 0
-  }
-```
-
-<span style="color:blue;">Para Estado (trainners)</span>
-
-```js
-  {
-    "id_estado": 0,
-    "nombre_estado": ""
-  }
-```
-
-<span style="color:blue;">Para Reporte_incidencia (reporte_incidencia)</span>
-
-```js
-  {
-    "id_reporte": 0,
-    "fecha_reporte": "0000-00-00"
-  }
-```
-
-<span style="color:blue;">Para Categoria (categoria)</span>
-
-```js
-  {
-    "id_categoria": 0,
-    "tipo_categoria": ""
-  }
-```
-
-<span style="color:blue;">Para Tipo_incidencia (tipo_incidencia)</span>
-
-```js
-  {
-    "id_tipo_incidencia": 0,
-    "tipo_incidencia": ""
-  }
-```
-
-
-## Metodo DELETE para todas las colecciones
-
-El metodo delete funciona igual en todas las colecciones, en la misma url colecciones?id=,
-aunque en este metodo lo unico que necesitamos es esta url para efectuarlo, sin necesidad de body
-
-```js
-  http://${config.hostname}:${config.port}/tipoIncidencia?id=2
-```
-```js
-  version:[1.0.0]
-```
-
-<span style="color:blue;">EJEMPLO:</span>
-
-<img src="./img/DEL.png"><br><br>
-
-
-# TECNOLOGIAS USADAS
-
-<div>
-<img src="./img/GFz_P-5e_400x400.png" alt="MySQL Logo" width="100">
-<img src="./img/mongodb-compass.png" alt="MySQL Logo" width="100">
-<img src="./img/Unofficial_JavaScript_logo_2.svg.png" alt="MySQL Logo" width="100">
-<img src="./img/nodemon.svg" alt="MySQL Logo" width="100">
-<img src="./img/nodejs-1-logo.svg" alt="MySQL Logo" width="100">
-<img src="./img/Typescript_logo_2020.svg.png" alt="MySQL Logo" width="100">
-<img src="./img/2560px-Npm-logo.svg.png" alt="MySQL Logo" width="100">
-</div>
-
-# EXTENSIONES USADAS
-
-MongoDB for VS Code
-
-### Autor : Jose Alberto Cabrejo Villar

@@ -1,6 +1,74 @@
+medicamentos:{
+    "_id":<ObjectId>,
+    "id_medicamento":<Int>,
+    "nombre":<String>,
+    "cantidad":<String>,
+    "precio":<String>,
+    "fecha_expiracion":<String>,
+    "proveedor":<Int>
+}
+
+proveedores:{
+    "_id":<ObjectId>,
+    "id_proveedor":<Int>,
+    "farmaceutica":<String>,
+    "nombre_completo":<String>,
+    "telefono":<String>,
+    "email":<strings>,
+}
+
+vendedores:{
+    "_id":<ObjectId>,
+    "id_vendedor":<Int>,
+    "nombre_completo":<String>,
+    "telefono":<String>,
+    "email":<strings>,
+}
+
+pacientes:{
+    "_id":<ObjectId>,
+    "id_paciente":<Int>,
+    "nombre_completo":<String>,
+    "telefono":<String>,
+    "email":<strings>,
+}
+
+Recetas:{
+    "_id":<ObjectId>,
+    "id_receta":<Int>,
+    "fechaEmision_receta":<String>,
+    "nombreDr_receta":<String>,
+    "nombrePaciente_receta":<Int>,
+    "medicamento_receta":<String>
+}
+
+Ventas:{
+    "_id":<ObjectId>,
+    "id_venta":<Int>,
+    "fecha_venta":<String>,
+    "proveedor":<Int>,
+    "medicamento":<Int>,
+    "cantidad":<Int>,
+}
+
+Compras:{
+    "_id":<ObjectId>,
+    "id_compra":<Int>,
+    "fecha_compra":<String>,
+    "vendedor":<Int>,
+    "paciente":<Int>,
+    "medicamento":<Int>,
+    "cantidad":<Int>,
+}
+
+
+
 EStos son diversos patrones para la validacion por DTO
 (/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]+$/) para validar nombres, apellidos, entre otros strings
 (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/) para validad email
 (/^[0-9-]*$/) para validar nnumero de telefono
 (/^(0?[1-9]|1[0-2]):[0-5]\\d\\s?(am|pm|AM|PM)$/) para validar hora
 (/^(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$/) para validar fechas
+
+mongodb+srv://ma98030965140:<password>@cluster0.aenymrf.mongodb.net/
+Campus*2023

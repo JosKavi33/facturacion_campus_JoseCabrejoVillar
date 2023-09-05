@@ -1,0 +1,571 @@
+use("facturacion_campus_JoseCabrejoVillar");
+db.createCollection("medicamentos",{
+    capped: true,
+    size: 10000,
+    max:5,
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            additionalProperties: false,
+            required:["id_medicamento","nombre","cantidad","precio","fecha_expiracion","proveedor"],
+            properties:
+            {
+                _id:{
+                    bsonType: "objectId"
+                },
+                id_medicamento:{
+                    bsonType: "int",
+                    description: "El campo medicine es obligatorio"
+                },
+                nombre:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]*$",
+                    description: "El campo medicine es obligatorio y es tipo texto"
+                },
+                cantidad:{
+                    bsonType: "int",
+                    minimum:0,
+                    maximum:9999,
+                    description: "El campo amount es obligatorio y es numerico"
+                },
+                precio:{
+                    bsonType: "int",
+                    minimum:0,
+                    maximum:999999,
+                    description: "El campo price es obligatorio y es numerico"
+                },
+                fecha_expiracion:{
+                    bsonType: "string",
+                    pattern:"^(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$",
+                    description: "El campo expiration_date es obligatorio y es tipo texto en formato 0000-00-00"
+                },
+                proveedor:{
+                    bsonType: "int",
+                    minimum:0,
+                    maximum:100,
+                    description: "El campo supplier es obligatorio y es numerico correspondiente al id de supplier"
+                },
+            }
+        }
+    }
+})
+use("facturacion_campus_JoseCabrejoVillar");
+db.medicamentos.insertMany([
+    {
+        "id_medicamento":1,
+        "nombre":"Paracetamol",
+        "cantidad":1000,
+        "precio":9000,
+        "fecha_expiracion":"2025-09-06",
+        "proveedor": 1
+    },
+    {
+        "id_medicamento":2,
+        "nombre": "Sal de Frutas",
+        "cantidad":900,
+        "precio":2000,
+        "fecha_expiracion":"2024-12-22",
+        "proveedor": 2
+    },
+    {
+        "id_medicamento":3,
+        "nombre": "Ibuprofeno",
+        "cantidad": 21,
+        "precio": 4500,
+        "fecha_expiracion":"2026-10-06",
+        "proveedor": 1
+    },
+    {
+        "id_medicamento":4,
+        "nombre": "Dolex",
+        "cantidad":9000,
+        "precio":1000,
+        "fecha_expiracion":"2023-11-21",
+        "proveedor": 4
+    },
+    {
+        "id_medicamento":5,
+        "nombre": "Mareol",
+        "cantidad": 30,
+        "precio":800,
+        "fecha_expiracion":"2023-09-06",
+        "proveedor": 4
+    }
+])
+use("facturacion_campus_JoseCabrejoVillar");
+db.createCollection("proveedores",{
+    capped: true,
+    size: 10000,
+    max:5,
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            additionalProperties: false,
+            required:["id_proveedor","farmaceutica","nombre_completo","telefono","email"],
+            properties:
+            {
+                _id:{
+                    bsonType: "objectId"
+                },
+                id_proveedor:{
+                    bsonType: "int",
+                    description: "El campo supplier_id es obligatorio"
+                },
+                farmaceutica:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]*$",
+                    description: "El campo pharmaceutical es obligatorio y es tipo texto"
+                },
+                nombre_completo:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]*$",
+                    description: "El campo supplier_name es obligatorio y es tipo texto"
+                },
+                telefono:{
+                    bsonType: "string",
+                    pattern:"^[0-9-]*$",
+                    description: "El campo phoneNumber es obligatorio y es tipo texto"
+                },
+                email:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+                    description: "El campo email_supplier es obligatorio"
+                }
+            }
+        }
+    }
+})
+use("facturacion_campus_JoseCabrejoVillar");
+db.proveedores.insertMany([
+    {
+        "id_proveedor":1,
+        "farmaceutica":"Cruz Verde",
+        "nombre_completo":"David Rueda",
+        "telefono":"310-254-222",
+        "email":"david@gmail.com",
+    },
+    {
+        "id_proveedor":2,
+        "farmaceutica":"Audifarma",
+        "nombre_completo":"Brian Melo",
+        "telefono":"312-554-662",
+        "email":"bria@gmail.com",
+    },
+    {
+        "id_proveedor":3,
+        "farmaceutica":"Bayer",
+        "nombre_completo":"Vicky Montañez",
+        "telefono":"310-254-254",
+        "email":"vicky@gmail.com",
+    },
+    {
+        "id_proveedor":4,
+        "farmaceutica":"Sanofi",
+        "nombre_completo":"Jhon Hernandez",
+        "telefono":"320-434-222",
+        "email":"jhon@gmail.com",
+    },
+    {
+        "id_proveedor":5,
+        "farmaceutica":"Super Sociedades",
+        "nombre_completo":"Nicolas Ramirez",
+        "telefono":"313-854-265",
+        "email":"nicolas@gmail.com",
+    }
+])
+use("facturacion_campus_JoseCabrejoVillar");
+db.createCollection("vendedores",{
+    capped: true,
+    size: 10000,
+    max:5,
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            additionalProperties: false,
+            required:["id_vendedor","nombre_completo","telefono","email"],
+            properties:
+            {
+                _id:{
+                    bsonType: "objectId"
+                },
+                id_vendedor:{
+                    bsonType: "int",
+                    description: "El campo seller_id es obligatorio"
+                },
+                nombre_completo:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]*$",
+                    description: "El campo seller_name es obligatorio y es tipo texto"
+                },
+                telefono:{
+                    bsonType: "string",
+                    pattern:"^[0-9-]*$",
+                    description: "El campo phoneNumber es obligatorio y es tipo texto"
+                },
+                email:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+                    description: "El campo email_seller es obligatorio"
+                }
+            }
+        }
+    }
+})
+use("facturacion_campus_JoseCabrejoVillar");
+db.vendedores.insertMany([
+    {
+        "id_vendedor":1,
+        "nombre_completo":"Juan Avila",
+        "telefono":"310-274-822",
+        "email":"juan@gmail.com",
+    },
+    {
+        "id_vendedor":2,
+        "nombre_completo":"Nicolas Caicedo",
+        "telefono":"318-234-222",
+        "email":"caicedo@gmail.com",
+    },
+    {
+        "id_vendedor":3,
+        "nombre_completo":"Konny Alucema",
+        "telefono":"310-284-552",
+        "email":"konny@gmail.com",
+    },
+    {
+        "id_vendedor":4,
+        "nombre_completo":"Daniel Manosalva",
+        "telefono":"333-354-222",
+        "email":"daniel@gmail.com",
+    },
+    {
+        "id_vendedor":5,
+        "nombre_completo":"Brayan Carvajal",
+        "telefono":"322-254-785",
+        "email":"brayan@gmail.com",
+    }
+])
+use("facturacion_campus_JoseCabrejoVillar");
+db.createCollection("pacientes",{
+    capped: true,
+    size: 10000,
+    max:5,
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            additionalProperties: false,
+            required:["id_paciente","nombre_completo","telefono","email"],
+            properties:
+            {
+                _id:{
+                    bsonType: "objectId"
+                },
+                id_paciente:{
+                    bsonType: "int",
+                    description: "El campo patient_id es obligatorio"
+                },
+                nombre_completo:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]*$",
+                    description: "El campo patient_name es obligatorio y es tipo texto"
+                },
+                telefono:{
+                    bsonType: "string",
+                    pattern:"^[0-9-]*$",
+                    description: "El campo phoneNumber es obligatorio y es tipo texto"
+                },
+                email:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+                    description: "El campo email_patient es obligatorio"
+                }
+            }
+        }
+    }
+})
+use("facturacion_campus_JoseCabrejoVillar");
+db.pacientes.insertMany([
+    {
+        "id_paciente":1,
+        "nombre_completo":"Carlos Cabrejo",
+        "telefono":"310-234-00",
+        "email":"carlos@gmail.com",
+    },
+    {
+        "id_paciente":2,
+        "nombre_completo":"Martha Villar",
+        "telefono":"300-234-222",
+        "email":"martha@gmail.com",
+    },
+    {
+        "id_paciente":3,
+        "nombre_completo":"Moises Cabrejo",
+        "telefono":"318-884-552",
+        "email":"moises@gmail.com",
+    },
+    {
+        "id_paciente":4,
+        "nombre_completo":"Alex Jurado",
+        "telefono":"317-354-258",
+        "email":"alex@gmail.com",
+    },
+    {
+        "id_paciente":5,
+        "nombre_completo":"Karl Salas",
+        "telefono":"316-123-456",
+        "email":"karl@gmail.com",
+    }
+])
+use("facturacion_campus_JoseCabrejoVillar");
+db.createCollection("recetas",{
+    capped: true,
+    size: 10000,
+    max:5,
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            additionalProperties: false,
+            required:["id_receta","fechaEmision_receta","nombreDr_receta","nombrePaciente_receta","medicamento_receta"],
+            properties:
+            {
+                _id:{
+                    bsonType: "objectId"
+                },
+                id_receta:{
+                    bsonType: "int",
+                    description: "El campo recipe_id es obligatorio"
+                },
+                fechaEmision_receta:{
+                    bsonType: "string",
+                    pattern:"^(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$",
+                    description: "El campo date_recipe es obligatorio y es tipo texto"
+                },
+                nombreDr_receta:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]+$",
+                    description: "El campo recipe_doctor es obligatorio y es tipo texto"
+                },
+                nombrePaciente_receta:{
+                    bsonType: "string",
+                    pattern:"^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ,.#@\\s-]+$",
+                    description: "El campo recipe_patient es obligatorio"
+                },
+                medicamento_receta:{
+                    bsonType: "int",
+                    description: "El campo medicine_recipe es obligatorio"
+                }
+            }
+        }
+    }
+})
+use("facturacion_campus_JoseCabrejoVillar");
+db.recetas.insertMany([
+    {
+        "id_receta": 1,
+        "fechaEmision_receta":"2023-08-30",
+        "nombreDr_receta":"Julian Caicedo",
+        "nombrePaciente_receta":1,
+        "medicamento_receta":1
+    },
+    {
+        "id_receta": 2,
+        "fechaEmision_receta":"2023-02-21",
+        "nombreDr_receta":"Ana Carmen",
+        "nombrePaciente_receta":2,
+        "medicamento_receta":2
+    },
+    {
+        "id_receta": 3,
+        "fechaEmision_receta":"2023-11-05",
+        "nombreDr_receta":"Cesar Narvaez",
+        "nombrePaciente_receta":3,
+        "medicamento_receta":3
+    },
+    {
+        "id_receta": 4,
+        "fechaEmision_receta":"2023-03-05",
+        "nombreDr_receta":"Diego Dieguito",
+        "nombrePaciente_receta":4,
+        "medicamento_receta":4
+    },
+    {
+        "id_receta": 5,
+        "fechaEmision_receta":"2022-08-30",
+        "nombreDr_receta":"Dr. Martinéz",
+        "nombrePaciente_receta":5,
+        "medicamento_receta":5
+    }
+])
+use("facturacion_campus_JoseCabrejoVillar");
+db.createCollection("ventas",{
+    capped: true,
+    size: 10000,
+    max:5,
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            additionalProperties: false,
+            required:["id_venta","fecha_venta","proveedor","medicamento","cantidad"],
+            properties:
+            {
+                _id:{
+                    bsonType: "objectId"
+                },
+                id_venta:{
+                    bsonType: "int",
+                    description: "El campo sale_id es obligatorio"
+                },
+                fecha_venta:{
+                    bsonType: "string",
+                    pattern:"^(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$",
+                    description: "El campo date_sale es obligatorio y es tipo texto"
+                },
+                proveedor:{
+                    bsonType: "int",
+                    description: "El campo supplier es obligatorio"
+                },
+                medicamento:{
+                    bsonType: "int",
+                    description: "El campo medicine es obligatorio"
+                },
+                cantidad:{
+                    bsonType: "int",
+                    description: "El campo amount es obligatorio"
+                }
+            }
+        }
+    }
+})
+use("facturacion_campus_JoseCabrejoVillar");
+db.ventas.insertMany([
+    {
+        "id_venta": 1,
+        "fecha_venta":"2023-09-12",
+        "proveedor":1,
+        "medicamento":1,
+        "cantidad": 10,
+    },
+    {
+        "id_venta": 2,
+        "fecha_venta":"2023-10-21",
+        "proveedor":2,
+        "medicamento":2,
+        "cantidad": 100,
+    },
+    {
+        "id_venta": 3,
+        "fecha_venta":"2023-09-12",
+        "proveedor":3,
+        "medicamento":3,
+        "cantidad": 20,
+    },
+    {
+        "id_venta": 4,
+        "fecha_venta":"2023-07-06",
+        "proveedor":4,
+        "medicamento":4,
+        "cantidad": 30,
+    },
+    {
+        "id_venta": 5,
+        "fecha_venta":"2023-01-16",
+        "proveedor":5,
+        "medicamento":5,
+        "cantidad": 27,
+    }
+])
+use("facturacion_campus_JoseCabrejoVillar");
+db.createCollection("compras",{
+    capped: true,
+    size: 10000,
+    max:5,
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            additionalProperties: false,
+            required:["id_compra","fecha_compra","vendedor","paciente","medicamento","cantidad"],
+            properties:
+            {
+                _id:{
+                    bsonType: "objectId"
+                },
+                id_compra:{
+                    bsonType: "int",
+                    description: "El campo buys_id es obligatorio"
+                },
+                fecha_compra:{
+                    bsonType: "string",
+                    pattern:"^(?:\\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])$",
+                    description: "El campo date_buys es obligatorio y es tipo texto"
+                },
+                vendedor:{
+                    bsonType: "int",
+                    description: "El campo seller es obligatorio"
+                },
+                paciente:{
+                    bsonType: "int",
+                    description: "El campo patient es obligatorio"
+                },
+                medicamento:{
+                    bsonType: "int",
+                    description: "El campo medicine es obligatorio"
+                },
+                cantidad:{
+                    bsonType: "int",
+                    description: "El campo amount es obligatorio"
+                }
+            }
+        }
+    }
+})
+use("facturacion_campus_JoseCabrejoVillar");
+db.compras.insertMany([
+    {
+        "id_compra": 1,
+        "fecha_compra":"2023-10-12",
+        "vendedor":1,
+        "paciente":1,
+        "medicamento":1,
+        "cantidad": 10,
+    },
+    {
+        "id_compra": 2,
+        "fecha_compra":"2023-12-03",
+        "vendedor":2,
+        "paciente":2,
+        "medicamento":2,
+        "cantidad": 10,
+    },
+    {
+        "id_compra": 3,
+        "fecha_compra":"2023-04-06",
+        "vendedor":3,
+        "paciente":3,
+        "medicamento":3,
+        "cantidad": 10,
+    },
+    {
+        "id_compra": 4,
+        "fecha_compra":"2023-08-14",
+        "vendedor":4,
+        "paciente":4,
+        "medicamento":4,
+        "cantidad": 10,
+    },
+    {
+        "id_compra": 5,
+        "fecha_compra":"2023-07-12",
+        "vendedor":5,
+        "paciente":5,
+        "medicamento":5,
+        "cantidad": 10,
+    },
+])
+use("facturacion_campus_JoseCabrejoVillar");
+db.compras.insertOne({
+        "id_compra": 5,
+        "fecha_compra":"2023-11-02",
+        "vendedor":5,
+        "paciente":5,
+        "medicamento":5,
+        "cantidad": 0,
+})

@@ -1,0 +1,122 @@
+use("facturacion_campus_JoseCabrejoVillar");
+db.createCollection("usuarios",{
+    capped: true,
+    size: 10000,
+    max:5,
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            additionalProperties: false,
+            required:["nombre","contraseña", "permisos"],
+            properties:
+            {
+                _id:{
+                    bsonType: "objectId"
+                },
+                nombre:{
+                    bsonType: "string",
+                    description: "El campo nombre es obligatorio"
+                },
+                contraseña:{
+                    bsonType: "string",
+                    description: "El campo nombre es obligatorio"
+                },
+                permisos:{
+                    bsonType: "object",
+                    properties: {
+                        "/compras":[
+                            "1.0.0",
+                            "1.0.1",
+                            "1.0.2",
+                            "1.0.3",
+                            "1.0.4",
+                            "1.0.5",
+                            "1.0.6",
+                            "1.0.7",
+                            "1.0.8",
+                            "1.0.9",
+                            "2.0.0",
+                        ],
+                        "/medicamentos":[
+                            "1.0.0",
+                            "1.0.1",
+                            "1.0.2",
+                            "1.0.3",
+                            "1.0.4",
+                            "1.0.5",
+                            "1.0.6",
+                            "1.0.7",
+                            "1.0.8",
+                            "1.0.9",
+                            "2.0.0",
+                        ],
+                        "/pacientes":[
+                            "1.0.0",
+                            "1.0.1",
+                            "1.0.2",
+                            "1.0.3",
+                            "1.0.4",
+                            "1.0.5",
+                            "1.0.6",
+                            "1.0.7",
+                            "1.0.8",
+                            "1.0.9",
+                            "2.0.0",
+                        ],
+                        "/proveedores":[
+                            "1.0.0",
+                            "1.0.1",
+                            "1.0.2",
+                            "1.0.3",
+                            "1.0.4",
+                            "1.0.5",
+                            "1.0.6",
+                            "1.0.7",
+                            "1.0.8",
+                            "1.0.9",
+                            "2.0.0",
+                        ],
+                        "/recetas":[
+                            "1.0.0",
+                            "1.0.1",
+                            "1.0.2",
+                            "1.0.3",
+                            "1.0.4",
+                            "1.0.5",
+                            "1.0.6",
+                            "1.0.7",
+                            "1.0.8",
+                            "1.0.9",
+                            "2.0.0",
+                        ],
+                        "/vendeores":[
+                            "1.0.0",
+                            "1.0.1",
+                            "1.0.2",
+                            "1.0.3",
+                            "1.0.4",
+                            "1.0.5",
+                            "1.0.6",
+                            "1.0.7",
+                            "1.0.8",
+                            "1.0.9",
+                            "2.0.0",
+                        ],
+                        "/ventas":[
+                            "1.0.0",
+                            "1.0.1",
+                            "1.0.2",
+                            "1.0.3",
+                            "1.0.4",
+                            "1.0.5",
+                            "1.0.6",
+                            "1.0.7",
+                            "1.0.8",
+                            "1.0.9",
+                            "2.0.0",
+                        ],
+                }
+            }
+        }
+    }
+}})

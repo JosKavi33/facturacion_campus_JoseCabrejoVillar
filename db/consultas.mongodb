@@ -1,0 +1,313 @@
+//? todo
+use("facturacion_campus_JoseCabrejoVillar");
+db.medicamentos.aggregate([
+    {
+        $project: {
+            "_id":0,
+            "medicine_id" :"$id_medicamento",
+            "medicine" :"$nombre",
+            "amount" :"$cantidad",
+            "price" :"$precio",
+            "expiration_date" :"$fecha_expiracion",
+            "supplier" :"$proveedor"
+        }
+    }
+]);
+use("facturacion_campus_JoseCabrejoVillar");
+db.proveedores.aggregate([
+    {
+        $project: {
+            "_id":0,
+            "supplier_id" :"$id_proveedor",
+            "pharmaceutic" :"$farmaceutica",
+            "complete_name" :"$nombre_completo",
+            "phoneNumber" :"$telefono",
+            "email_supplier" :"$email",
+        }
+    }
+])
+//? Medicamentos ID
+use("facturacion_campus_JoseCabrejoVillar");
+db.medicamentos.aggregate([
+    {
+        $match:{"id_medicamento":1}
+    },
+    {
+        $project: {
+            "_id":0,
+            "medicine_id" :"$id_medicamento",
+            "medicine" :"$nombre",
+            "amount" :"$cantidad",
+            "price" :"$precio",
+            "expiration_date" :"$fecha_expiracion",
+            "supplier" :"$proveedor"
+        }
+    }
+]);
+
+//? 1. Obtener todos los medicamentos con menos de 50 unidades en stock
+
+use("facturacion_campus_JoseCabrejoVillar");
+db.medicamentos.aggregate([
+    {
+        $match:{"cantidad": {$lt:50}}
+    },
+    {
+        $project: {
+            "_id":0,
+            "medicine_id" :"$id_medicamento",
+            "medicine" :"$nombre",
+            "amount" :"$cantidad",
+            "price" :"$precio",
+            "expiration_date" :"$fecha_expiracion",
+            "supplier" :"$proveedor"
+        }
+    }
+]);
+
+//? 2. Listar los proveedores con su información de contacto en medicamentos
+use("facturacion_campus_JoseCabrejoVillar");
+db.medicamentos.aggregate([
+    {
+        $lookup: {
+            "from": "proveedores",
+            "localField": "proveedor",
+            "foreignField": "id_proveedor",
+            "as": "proveedorFK"
+        }
+    },
+    {
+        $project: {
+            "_id":0,
+            "medicine_id" :"$id_medicamento",
+            "medicine" :"$nombre",
+            "amount" :"$cantidad",
+            "price" :"$precio",
+            "expiration_date" :"$fecha_expiracion",
+            "supplier" :"$proveedorFK"
+        }
+    }
+]);
+
+//? 3.Medicamentos comprados al 'Proveedor A= "David Rueda"'
+use("facturacion_campus_JoseCabrejoVillar");
+db.ventas.aggregate([
+    {
+        $match:{ proveedor: 1}
+    },
+    {
+        $lookup: {
+            "from": "proveedores",
+            "localField": "proveedor",
+            "foreignField": "id_proveedor",
+            "as": "proveedorFK"
+        }
+    },
+    {
+        $lookup: {
+            "from": "medicamentos",
+            "localField": "medicamento",
+            "foreignField": "id_medicamento",
+            "as": "medicamentoFK"
+        }
+    },
+    {
+        $project: {
+            "_id":0,
+            "medicine_id" :"$id_venta",
+            "supplier" :"$proveedorFK.nombre_completo",
+            "medicine" :"$medicamentoFK.nombre",
+        }
+    },
+]);
+
+//? 4.Obtener recetas médicas emitidas después del 1 de enero de 2023
+use("facturacion_campus_JoseCabrejoVillar");
+db.recetas.aggregate([
+    {
+        $match:{"fechaEmision_receta": {$gt:"2022-12-12"}}
+    }
+]);
+
+//? 5. Total de ventas del medicamento 'Paracetamol'
+use("facturacion_campus_JoseCabrejoVillar");
+db.compras.aggregate([
+    {
+        $match:{
+            medicamento: 1
+        }
+    },
+    {
+        $lookup:{
+            "from": "medicamentos",
+            "localField": "medicamento",
+            "foreignField": "id_medicamento",
+            "as": "medicamentoFK"
+        }
+    },
+    {
+        $project: {
+            "_id":0,
+            "cantidad_vendida":"$cantidad",
+            "medicamento":"$medicamentoFK.nombre", 
+        }   
+    }
+]);
+
+//? 6. Medicamentos que caducan antes del 1 de enero de 2024
+use("facturacion_campus_JoseCabrejoVillar");
+db.medicamentos.aggregate([
+    {
+        $match : {"fecha_expiracion" :{$lt: "2024-01-01"}}
+    }
+]);
+
+//? 7. Total de medicamentos vendidos por cada proveedor
+use("facturacion_campus_JoseCabrejoVillar");
+db.ventas.aggregate([
+    {
+        $lookup:{
+            "from": "proveedores",
+            "localField": "proveedor",
+            "foreignField": "id_proveedor",
+            "as": "proveedorFK"
+        }
+    },
+    {
+        $project: {
+        "proveedor":"$proveedorFK.id_proveedor",
+        "nombre":"$proveedorFK.nombre_completo",
+        "cantidad":"$cantidad"
+        }
+    }
+]);
+
+//? 8. Cantidad total de dinero recaudado por las ventas de medicamentos
+use("facturacion_campus_JoseCabrejoVillar");
+db.compras.aggregate([
+    {
+        $lookup:{
+            "from": "medicamentos",
+            "localField": "medicamento",
+            "foreignField": "id_medicamento",
+            "as": "medicamentoFK"
+        }
+    },
+    {
+        $project: {
+        "proveedor":"$proveedorFK.id_proveedor",
+        "nombre":"$proveedorFK.nombre_completo",
+        "cantidad":"$cantidad"
+        }
+    }
+]);
+
+//? 9. Recetas prescritas por el Dr. Martínez
+use("facturacion_campus_JoseCabrejoVillar");
+db.recetas.aggregate([
+    {
+        $match:{
+            nombreDr_receta: "Dr. Martinéz"
+        }
+    },
+    {
+        $lookup:{
+            "_id":0,
+            "from": "medicamentos",
+            "localField": "medicamento_receta",
+            "foreignField": "id_medicamento",
+            "as": "medicamentoFK"
+        }
+    },
+    {
+        $project: {
+        "receta":"$id_receta",
+        "doctor":"$nombreDr_receta",
+        "medicamento":"$medicamentoFK_nombre"
+        }
+    }
+]);
+
+//? 10. Medicamentos que no han sido vendidos
+use("facturacion_campus_JoseCabrejoVillar");
+db.compras.aggregate([
+    {
+        $match:{
+            cantidad: 0
+        }
+    },
+    {
+        $lookup:{
+            "from": "medicamentos",
+            "localField": "medicamento_receta",
+            "foreignField": "id_medicamento",
+            "as": "medicamentoFK"
+        }
+    },
+    {
+        $project: {
+        "medicamento":"$medicamentoFK_nombre"
+        }
+    }
+]);
+
+//? 11. Obtener el medicamento más caro
+use("facturacion_campus_JoseCabrejoVillar");
+db.medicamentos.aggregate([
+    {
+        $limit:1,
+    },
+    {
+        $sort:{
+            precio: -1
+        }
+    },
+    {
+        $project: {
+        "precio":"$precio",
+        "medicamento":"$nombre"
+        }
+    }
+]);
+
+//? 12.Número de medicamentos por proveedor
+use("facturacion_campus_JoseCabrejoVillar");
+db.medicamentos.aggregate([
+    {
+        $lookup:{
+            "from": "proveedores",
+            "localField": "proveedor",
+            "foreignField": "id_proveedor",
+            "as": "proveedorFK"
+        }
+    },
+    {
+        $project: {
+            "_id":0,
+            "numero_medicamentos":"$cantidad",
+            "proveedor":"$proveedorFK.nombre_completo"
+        }
+    }
+]);
+
+//? 13.Pacientes que han comprado Paracetamol
+use("facturacion_campus_JoseCabrejoVillar");
+db.compras.aggregate([
+    {
+        $match: {medicamento:1}
+    },
+    {
+        $lookup: {
+          from: pacientes,
+          localField: paciente,
+          foreignField: paciente_id,
+          as: pacienteFK
+        }
+    },
+    {
+        $project: {
+            "_id":0,
+            "paciente":"$pacienteFK.nombre",
+        }
+    }
+]);
